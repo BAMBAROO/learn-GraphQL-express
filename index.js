@@ -28,7 +28,7 @@ const authorType = new GraphQLObjectType({
       }
     }
   })
-})
+});
 
 const authors = [
 	{ id: 1, name: 'J. K. Rowling' },
@@ -61,13 +61,20 @@ const bookType = new GraphQLObjectType({
       }
     }
   })
-})
+});
 
 
 const rootQuery = new GraphQLObjectType({
   name: "query",
   description: "root query",
   fields: () => ({
+    book: {
+      type: bookType,
+      args: { id: { type: GraphQLInt } },
+      resolve: (parent, args) => {
+        return books.find((book) => book.id === args.id);
+      }
+    },
     books: {
       type: new GraphQLList(bookType),
       resolve: () => books 
